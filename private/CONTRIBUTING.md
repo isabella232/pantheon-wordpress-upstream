@@ -41,6 +41,38 @@ You can tail the error log in VVV by invoking the bundled script from your host 
 bash private/tail-vvv-php-error-log.sh
 ```
 
+## Upgrading
+
+Pantheon will prompt you when there are upstream updates for WordPress Core to install. If there is a conflict (e.g. in `README.md`) then you can manually merge from the upstream via:
+
+```bash
+git remote add upstream https://github.com/pantheon-systems/WordPress.git
+git checkout master
+git pull -X mine upstream master
+git checkout origin/master -- readme.html # any files that you modified
+git diff --staged # sanity check
+git commit
+git push origin master
+```
+
+There is a script for updating plugins. You can define the plugins from WordPress.org to keep updated by creating a file `private/wordpress-org-plugins.txt` which contains a list of the slugs you want to update:
+
+```
+wp-redis
+jetpack
+customize-widgets-plus
+```
+
+You can then run [`private/update.sh`](private/update.sh) inside of Vagrant (you'll want to make sure you have first [set your git identity](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup#Your-Identity) inside of Vagrant).
+
+Any additional update logic can be committed to `private/update-custom.sh`.
+
+You can also get the latest from this repo via:
+
+```
+git pull https://github.com/xwp/pantheon-wordpress-upstream.git master
+```
+
 ## Public Environments and Deployments
 
 The site is hosted with Pantheon.

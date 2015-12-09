@@ -148,6 +148,13 @@ if ( ! defined( 'WP_DEBUG' ) ) {
 	define( 'WP_DEBUG', false );
 }
 
+/**
+ * Disable file mods if SFTP is not enabled.
+ */
+if ( ! defined( 'DISALLOW_FILE_MODS' ) ) {
+	define( 'DISALLOW_FILE_MODS', ! is_writable( __FILE__ ) );
+}
+
 /* That's all, stop editing! Happy Pressing. */
 
 /** Absolute path to the WordPress directory. */

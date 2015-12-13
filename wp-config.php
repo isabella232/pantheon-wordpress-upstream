@@ -88,6 +88,15 @@ if ( file_exists( dirname( __FILE__ ) . '/wp-config-local.php' ) && ! isset( $_E
 		// Don't show deprecations; useful under PHP 5.5.
 		error_reporting( E_ALL ^ E_DEPRECATED );
 
+		// Force the use of a safe temp directory when in a container.
+		if ( defined( 'PANTHEON_BINDING' ) ) {
+			define( 'WP_TEMP_DIR', sprintf( '/srv/bindings/%s/tmp', PANTHEON_BINDING ) );
+		}
+
+		// FS writes aren't permitted in test or live, so we should let WordPress know to disable relevant UI.
+		if ( in_array( $_ENV['PANTHEON_ENVIRONMENT'], array( 'test', 'live' ), true ) && ! defined( 'DISALLOW_FILE_MODS' ) ) {
+			define( 'DISALLOW_FILE_MODS', true );
+		}
 	} else {
 		/**
 		 * This block will be executed if you have NO wp-config-local.php and you

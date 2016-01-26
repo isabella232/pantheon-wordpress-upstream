@@ -25,6 +25,11 @@ before_install:
     - echo "WP_VERSION=$WP_VERSION"
 
 install:
+    - export DEV_LIB_PATH=dev-lib
+    - if [ ! -e "$DEV_LIB_PATH" ] && [ -L .travis.yml ]; then export DEV_LIB_PATH=$( dirname $( readlink .travis.yml ) ); fi
+    - if [ ! -e "$DEV_LIB_PATH" ]; then git clone https://github.com/xwp/wp-dev-lib.git $DEV_LIB_PATH; fi
+    - source $DEV_LIB_PATH/travis.install.sh
+
     # Gathering tips from: https://gist.github.com/iamEAP/8855842
     # Dynamic hosts through Pantheon mean constantly checking interactively
     # that we mean to connect to an unknown host. We ignore those here.
@@ -39,17 +44,13 @@ install:
     #- export PATH="$HOME/pantheon-cli/bin:$PATH"
 
 before_script:
-    - export DEV_LIB_PATH=dev-lib
-    - if [ ! -e "$DEV_LIB_PATH" ] && [ -L .travis.yml ]; then export DEV_LIB_PATH=$( dirname $( readlink .travis.yml ) ); fi
-    - source $DEV_LIB_PATH/travis.before_script.sh
-    - export LIMIT_TRAVIS_PR_CHECK_SCOPE=patches
     - git remote add pantheon ssh://codeserver.dev.$PANTHEON_UUID@codeserver.dev.$PANTHEON_UUID.drush.in:2222/~/repository.git
 
 script:
-    - $DEV_LIB_PATH/travis.script.sh
+    - source $DEV_LIB_PATH/travis.script.sh
 
 after_script:
-    - $DEV_LIB_PATH/travis.after_script.sh
+    - source $DEV_LIB_PATH/travis.after_script.sh
 
 after_success:
     - if [ $TRAVIS_BRANCH == 'master' ] && [ $TRAVIS_PULL_REQUEST == 'false' ]; then git fetch pantheon && git merge -m "Merge changes from pantheon into github" pantheon/master && git push origin HEAD:master && git push pantheon HEAD:master; fi

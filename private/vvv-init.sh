@@ -63,7 +63,7 @@ if [ ! -e .git/hooks/pre-commit ] && [ -e dev-lib/pre-commit ]; then
 	cd - > /dev/null
 fi
 
-if ! wp --allow-root is-installed; then
+if ! wp --allow-root core is-installed; then
 	wp --allow-root core install --title="Example" --admin_user="dev" --admin_password="dev" --admin_email="dev@127.0.0.1"
 fi
 

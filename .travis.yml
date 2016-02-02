@@ -53,6 +53,6 @@ after_script:
     - source $DEV_LIB_PATH/travis.after_script.sh
 
 after_success:
-    - if [ $TRAVIS_BRANCH == 'master' ] && [ $TRAVIS_PULL_REQUEST == 'false' ]; then git fetch pantheon && git merge -m "Merge changes from pantheon into github" pantheon/master && git push origin HEAD:master && git push pantheon HEAD:master; fi
+    - if [ $TRAVIS_BRANCH == 'master' ] && [ $TRAVIS_PULL_REQUEST == 'false' ]; then git fetch pantheon && git merge --squash -m "Merge changes from pantheon into github" pantheon/master && git push origin HEAD:master && git push pantheon HEAD:master; fi
     # @todo If not master, we can push to a feature branch on Pantheon and create a multidev environment if it doesn't already exist.
     # if [ $TRAVIS_BRANCH != 'master' ]; then if ! terminus site --site=$PANTHEON_SITE env-exists --env=$TRAVIS_BRANCH; then terminus site --site=$PANTHEON_SITE create-env --env=$TRAVIS_BRANCH; fi; git push pantheon; fi

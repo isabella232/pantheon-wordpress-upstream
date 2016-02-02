@@ -6,7 +6,7 @@ The site was designed to get up and running quickly via [varying-vagrant-vagrant
 
 So to get started, follow the [First Vagrant Up][3] instructions, including:
 
-```sh
+```bash
 git clone git@github.com:Varying-Vagrant-Vagrants/VVV.git vvv
 cd vvv
 vagrant up --provision
@@ -37,7 +37,7 @@ vagrant -c 'cd /srv/www/example.com && wp some command'
 
 You can tail the error log in VVV by invoking the bundled script from your host machine:
 
-```
+```bash
 bash private/tail-vvv-php-error-log.sh
 ```
 
@@ -69,7 +69,7 @@ Any additional update logic can be committed to `private/update-custom.sh`.
 
 You can also get the latest from this repo via:
 
-```
+```bash
 git pull --squash https://github.com/xwp/pantheon-wordpress-upstream.git master
 ```
 
@@ -88,7 +88,7 @@ git remote add pantheon ssh://codeserver.dev.123e4567-e89b-12d3-a456-42665544000
 
 Then you can deploy simply by merging any feature branches into the `master` branch on GitHub (via pull request), and then just do:
 
-```
+```bash
 git checkout master && git pull origin && git push pantheon
 ```
 

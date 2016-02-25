@@ -24,8 +24,6 @@ call_user_func( function() {
 
 		'FORCE_SSL_LOGIN' => false,
 		'FORCE_SSL_ADMIN' => false,
-
-		'DISALLOW_FILE_MODS' => true,
 	);
 
 	if ( ! file_exists( '/vagrant' ) ) {

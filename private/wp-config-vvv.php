@@ -28,6 +28,12 @@ call_user_func( function() {
 		'DISALLOW_FILE_MODS' => true,
 	);
 
+	if ( ! file_exists( '/vagrant' ) ) {
+		$constants['DB_USER'] = 'external';
+		$constants['DB_HOST'] = '192.168.50.4';
+		$constants['DB_PASSWORD'] = 'external';
+	}
+
 	foreach ( $constants as $key => $value ) {
 		if ( ! defined( $key ) ) {
 			define( $key, $value );

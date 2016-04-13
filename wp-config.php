@@ -5,7 +5,7 @@
  *
  * See our documentation for more details:
  *
- * http://helpdesk.getpantheon.com/
+ * https://pantheon.io/docs
  */
 
 if ( file_exists( dirname( __FILE__ ) . '/wp-config-local.php' ) && ! isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ) {
@@ -80,7 +80,7 @@ if ( file_exists( dirname( __FILE__ ) . '/wp-config-local.php' ) && ! isset( $_E
 
 		// A couple extra tweaks to help things run well on Pantheon.
 		if ( isset( $_SERVER['HTTP_HOST'] ) ) { // WPCS: input var okay.
-			$is_ssl = ( isset( $_SERVER['HTTP_X_SSL'] ) && 'ON' === $_SERVER['HTTP_X_SSL'] );
+			$is_ssl = ( isset( $_SERVER['HTTP_X_SSL'] ) && 'ON' === $_SERVER['HTTP_X_SSL'] ) || ( isset( $_SERVER['HTTP_USER_AGENT_HTTPS'] ) && 'ON' === $_SERVER['HTTP_USER_AGENT_HTTPS'] );
 			$protocol = $is_ssl ? 'https://' : 'http://';
 			define( 'WP_HOME', $protocol . $_SERVER['HTTP_HOST'] ); // WPCS: input var ok; sanitization ok.
 			define( 'WP_SITEURL', $protocol . $_SERVER['HTTP_HOST'] ); // WPCS: input var ok; sanitization ok.

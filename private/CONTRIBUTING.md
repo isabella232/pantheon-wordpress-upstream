@@ -70,7 +70,7 @@ Any additional update logic can be committed to `private/update-custom.sh`.
 You can also get the latest from this repo via:
 
 ```bash
-git pull --squash https://github.com/xwp/pantheon-wordpress-upstream.git master
+git pull https://github.com/xwp/pantheon-wordpress-upstream.git master
 ```
 
 ## Public Environments and Deployments

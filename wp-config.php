@@ -27,12 +27,14 @@ if ( file_exists( dirname( __FILE__ ) . '/wp-config-local.php' ) && ! isset( $_E
 
 	if ( isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ) {
 		// Require SSL.
-		if ( ! isset( $_SERVER['HTTP_X_SSL'] ) || ( isset( $_SERVER['HTTP_X_SSL'] ) && 'ON' !== $_SERVER['HTTP_X_SSL'] ) ) { // WPCS: input var ok.
-			header( 'HTTP/1.0 301 Moved Permanently' );
-			header( 'Location: https://' . $_SERVER['HTTP_HOST'] . ( empty( $_SERVER['REQUEST_URI'] ) ? '/' : $_SERVER['REQUEST_URI'] ) ); // WPCS: input var ok; sanitization ok.
-			exit();
-		} else {
-			header( 'Strict-Transport-Security: max-age=3600; preload' ); // @todo bump max-age to a week.
+		if ( 'cli' !== php_sapi_name() ) {
+			if ( ! isset( $_SERVER['HTTP_X_SSL'] ) || ( isset( $_SERVER['HTTP_X_SSL'] ) && 'ON' !== $_SERVER['HTTP_X_SSL'] ) ) { // WPCS: input var ok.
+				header( 'HTTP/1.0 301 Moved Permanently' );
+				header( 'Location: https://' . $_SERVER['HTTP_HOST'] . ( empty( $_SERVER['REQUEST_URI'] ) ? '/' : $_SERVER['REQUEST_URI'] ) ); // WPCS: input var ok; sanitization ok.
+				exit();
+			} else {
+				header( 'Strict-Transport-Security: max-age=3600; preload' ); // @todo bump max-age to a week.
+			}
 		}
 		define( 'FORCE_SSL_ADMIN', true );
 

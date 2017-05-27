@@ -6,3 +6,15 @@ workflows:
       - type: webphp
         description: Log to New Relic
         script: private/scripts/new_relic_deploy.php
+
+protected_web_paths:
+  - /.travis.yml
+  - /.dev-lib
+  - /.jshintignore
+  - /CONTRIBUTING.md
+  - /README.md
+  - /pantheon.yml
+  - /phpcs.xml
+  - /dev-lib
+
+php_version: 7.0

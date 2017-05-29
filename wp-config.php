@@ -164,6 +164,15 @@ if ( ! defined( 'DISALLOW_FILE_MODS' ) ) {
 	define( 'DISALLOW_FILE_MODS', ! is_writable( __FILE__ ) );
 }
 
+/**
+ * Jetpack staging and debug mode in all environments other than production.
+ */
+if ( ! isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ) {
+	define( 'JETPACK_DEV_DEBUG', true );
+} elseif ( 'live' !== $_ENV['PANTHEON_ENVIRONMENT'] ) {
+	define( 'JETPACK_STAGING_MODE', true );
+}
+
 /* That's all, stop editing! Happy Pressing. */
 
 /** Absolute path to the WordPress directory. */

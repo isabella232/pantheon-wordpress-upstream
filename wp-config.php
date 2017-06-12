@@ -24,6 +24,19 @@ if (file_exists(dirname(__FILE__) . '/wp-config-local.php') && !isset($_ENV['PAN
  */
 else:
   if (isset($_ENV['PANTHEON_ENVIRONMENT'])):
+
+    // Require SSL.
+    if ( 'cli' !== php_sapi_name() ) {
+      if ( ! isset( $_SERVER['HTTP_X_SSL'] ) || ( isset( $_SERVER['HTTP_X_SSL'] ) && 'ON' !== $_SERVER['HTTP_X_SSL'] ) ) { // WPCS: input var ok.
+        header( 'HTTP/1.0 301 Moved Permanently' );
+        header( 'Location: https://' . $_SERVER['HTTP_HOST'] . ( empty( $_SERVER['REQUEST_URI'] ) ? '/' : $_SERVER['REQUEST_URI'] ) ); // WPCS: input var ok; sanitization ok.
+        exit();
+      } else {
+        header( 'Strict-Transport-Security: max-age=604800; preload' );
+      }
+    }
+    define( 'FORCE_SSL_ADMIN', true );
+
     // ** MySQL settings - included in the Pantheon Environment ** //
     /** The name of the database for WordPress */
     define('DB_NAME', $_ENV['DB_NAME']);
@@ -146,6 +159,15 @@ define('WPLANG', '');
  */
 if ( ! defined( 'WP_DEBUG' ) ) {
     define('WP_DEBUG', false);
+}
+
+/**
+ * Jetpack staging and debug mode in all environments other than production.
+ */
+if ( ! isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ) {
+  define( 'JETPACK_DEV_DEBUG', true );
+} elseif ( 'live' !== $_ENV['PANTHEON_ENVIRONMENT'] ) {
+  define( 'JETPACK_STAGING_MODE', true );
 }
 
 /* That's all, stop editing! Happy Pressing. */
